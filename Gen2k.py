@@ -295,16 +295,17 @@ def gen_word_combo(words=[], separations=[], padding=[], perm_num=0):
         word_list.append( parola)
         for s in separations:
             word_list.append( s.join( w ) )
-        
-    if padding:
+    
+    p_word_list = []
+    for p in padding:
         for ww in word_list:
-           iteraz = [ww]+(padding)
-           padded = list( itertools.permutations(iteraz) )
-           #print padded
-           for pl in padded:
-               c = ''.join( pl ) 
-               word_list.append( c ) 
-
+           p_word = p+ww
+           p_word_list.append( p_word )
+           for pp in padding:
+               p_word_list.append( p_word+pp )
+    
+    word_list.extend(p_word_list)
+    
     return word_list
  
  
