@@ -73,8 +73,6 @@ def help():
 
    [ -s ] Fill some custom separation characters in word combination (-c). Declare it into quotes separated by spaces, example: "# ! ," 
    
-   [ -p ] Fill some custom separation characters in word combination (-c). Declare it into quotes separated by spaces, example: "# ! ," 
-
           Note: Conversion to upper/lowercase & capitalisation
           takes place before other modes are applied to the original list.
  
