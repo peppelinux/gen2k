@@ -7,7 +7,8 @@ __version__   = 'TESTING'
 __date__      = '16/12/2015'
  
 import sys
- 
+import itertools
+import pprint    
  
 """
 ##############################  GEN2K  ####################################
@@ -35,7 +36,8 @@ import sys
 ###########################################################################
 """
  
- 
+
+
 def help():
     print """
  
@@ -71,21 +73,30 @@ def help():
  
    [ -z ] Enable conversion of words to upper & lower case letters.
 
-   [ -s ] Fill some custom separation characters in word combination (-c). Declare it into quotes separated by spaces, example: "# ! ," 
+   [ -s ] Fill some custom separation characters in word combination (-c). Declare it into quotes separated by spaces, example: "_ : ," 
    
+   [ -p ] Fill some custom left and right padding characters in word combination (-c). Declare it into quotes separated by spaces, example: "# !"
+   
+   [ -pn ] itertool permutations level number "
           Note: Conversion to upper/lowercase & capitalisation
           takes place before other modes are applied to the original list.
  
    Example:
-   python gen2k.py -w wordlist.list -c -o WordList_output.txt -z -s "# !" -n -p 3
+   python Gen2k.py -w wordlist.list -c -o WordList_output.txt -z -n -s "_" -pn 3 -p "!"
    
    """ % __version__
  
- 
+
+
  
  
 def main():
- 
+    
+    if exist('-pn'):
+        _perm_num = int(find('-pn'))
+    else:
+        _perm_num = 3
+    
     if exist('-h'):
         help()
         sys.exit(0)
@@ -104,10 +115,12 @@ def main():
         data = master_list
  
     if exist('-c'):
-        if exist('-s'):
-           temp = gen_word_combo( master_list, tuple(find('-s').split(' ')) )
+        if exist('-s') and exist('-p'):
+           temp = gen_word_combo( master_list, find('-s').split(' '), find('-p').split(' '), perm_num=_perm_num )        
+        elif exist('-s'):
+           temp = gen_word_combo( master_list, find('-s').split(' '), perm_num=_perm_num )
         else:
-           temp = gen_word_combo(master_list)
+           temp = gen_word_combo(master_list, perm_num=_perm_num)
         data = list(set(temp+data))
  
     if exist('-n'):
@@ -175,16 +188,12 @@ def write_file(path_to_file, data=[]):
     """
    Writing to specified file.
    """
-    try:
-        handle = open(path_to_file, 'wb+')
- 
-        for word in data:
-            handle.write(word+'\n')
- 
-        handle.close()
-    except(BaseException):
-        print '[!] Error occured while writing to file.'
-        sys.exit(1)
+    handle = open(path_to_file, 'wb+')
+    
+    for word in data:
+        handle.write(word+'\n')
+    
+    handle.close()
  
  
  
@@ -260,36 +269,43 @@ def gen_year(words=[]):
  
  
  
-def gen_word_combo(words=[], separations=()):
+def gen_word_combo(words=[], separations=[], padding=[], perm_num=0):
     """
     Function to mix multiple words from given list.
     """
-    import itertools
-    import pprint    
-    
+
+    print perm_num,'sdfsdf'
     word_list = []
 
 
     if len(words) <= 1:
         return word_list
  
-    for word in words:
-        for second_word in words:
-            for terzo_word in words: 
-                if word != second_word and word != terzo_word:
-                    l = list(itertools.permutations((word, second_word)))
-                    l.extend( list(set(itertools.permutations((second_word, terzo_word)))) )
-                    l.extend( list(set(itertools.permutations((word, terzo_word))) ) )
-                    l.extend( list(set(itertools.permutations((word, second_word, terzo_word))) ) )
-                    
-                    if separations:
-                        l.extend( list(itertools.permutations( separations + (second_word, terzo_word) )) )
-                        l.extend( list(itertools.permutations( separations + (word, terzo_word))) )
-                        l.extend( list(itertools.permutations( separations + (word, second_word, terzo_word))) )
-                        
-                    for w in l:
-                        word_list.append( ''.join( w ) )
+    #for word in words:
+        #for second_word in words:
+            #for terzo_word in words: 
+                #if word != second_word and word != terzo_word:
+    l = list(itertools.permutations( words, perm_num))
     
+    #if separations:
+        #words.extend(separations)
+        #l.extend( list(itertools.permutations( words, perm_num )) 
+    
+    for w in l:
+        parola = ''.join( w ) 
+        word_list.append( parola)
+        for s in separations:
+            word_list.append( s.join( w ) )
+        
+    if padding:
+        for ww in word_list:
+           iteraz = [ww]+(padding)
+           padded = list( itertools.permutations(iteraz) )
+           #print padded
+           for pl in padded:
+               c = ''.join( pl ) 
+               word_list.append( c ) 
+
     return word_list
  
  
@@ -346,4 +362,5 @@ def exist(flag):
  
 
 if __name__ == '__main__':
+    
     main()
