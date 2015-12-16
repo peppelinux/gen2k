@@ -273,28 +273,26 @@ def gen_word_combo(words=[], separations=[], padding=[], perm_num=0):
     """
     Function to mix multiple words from given list.
     """
-
+    
     word_list = []
-
-
+    
+    
     if len(words) <= 1:
         return word_list
- 
+    
     #for word in words:
         #for second_word in words:
             #for terzo_word in words: 
                 #if word != second_word and word != terzo_word:
-    l = list(itertools.permutations( words, perm_num))
     
-    #if separations:
-        #words.extend(separations)
-        #l.extend( list(itertools.permutations( words, perm_num )) 
     
-    for w in l:
-        parola = ''.join( w ) 
-        word_list.append( parola)
-        for s in separations:
-            word_list.append( s.join( w ) )
+    for r in range(perm_num+1):
+        l = list(itertools.permutations(words, r))
+        for w in l:
+            parola = ''.join( w ) 
+            word_list.append( parola)
+            for s in separations:
+                word_list.append( s.join( w ) )
     
     p_word_list = []
     for p in padding:
