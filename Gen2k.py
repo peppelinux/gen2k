@@ -274,7 +274,6 @@ def gen_word_combo(words=[], separations=[], padding=[], perm_num=0):
     Function to mix multiple words from given list.
     """
 
-    print perm_num,'sdfsdf'
     word_list = []
 
 
