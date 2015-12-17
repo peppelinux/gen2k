@@ -77,12 +77,16 @@ def help():
    
    [ -p ] Fill some custom left and right padding characters in word combination (-c). Declare it into quotes separated by spaces, example: "# !"
    
-   [ -pn ] itertool permutations level number "
+   [ -pn ] itertool permutations level number 
+   
+   
           Note: Conversion to upper/lowercase & capitalisation
           takes place before other modes are applied to the original list.
  
-   Example:
-   python Gen2k.py -w wordlist.list -c -o WordList_output.txt -z -n -s "_" -pn 3 -p "!"
+   This example, using a wordlist composed by 40 words, produce a variety of more then 33 milions of combination:
+   python Gen2k.py -w wordlist.list -c -o WordList_output.txt -z -n -s "_ ." -pn 3 -p "! #"
+   
+   Keep in mind that the RAM memory usage could increase drammatically :)
    
    """ % __version__
  
