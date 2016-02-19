@@ -19,5 +19,10 @@ FEATURES
 * WPA/WPA2 password validation check.
 * No external dependencies.
 
+EXAMPLES
+========
+
+* python Gen2k.py -w wordlist.list -c -o WordList_output.txt -z -n -s "_ & . ;" -pn 3 -p "! #"
+
 ![alt tag](help.png)
 
